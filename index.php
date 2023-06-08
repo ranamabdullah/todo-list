@@ -61,7 +61,7 @@
 <body>
   <div class="container">
     <h2>Login</h2>
-    <form>
+    <form method="post" action="login_user.php" > 
       <div class="input-group">
         <label for="username">Username</label>
         <input type="text" id="username" name="username" placeholder="Enter your username">
