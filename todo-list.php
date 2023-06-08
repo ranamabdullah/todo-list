@@ -123,35 +123,29 @@
   <div class="container">
     <h1>To-Do List</h1>
     <ul class="todo-list">
-      <li class="todo-item">
-        <input type="checkbox" id="todo1">
-        <label for="todo1">Task 1</label>
+      <?php
+      include "connection.php";
+      $sql="SELECT *FROM task";
+      $query=mysqli_query($conn,$sql);
+      while($row=mysqli_fetch_assoc($query))
+      {
+      ?>
+      <li class="todo-item"> 
+        <label for="todo1"><?= $row['name'] ?></label>
         <div class="actions">
-          <button class="edit">Edit</button>
-          <button class="delete">Delete</button>
+          <button class="edit" data-name="<?= $row['name'] ?>" onclick="editBtn(this)" id=<?= $row['id'] ?>>Edit</button>
+          <button class="delete" id=<?= $row['id'] ?>>Delete</button>
         </div>
-      </li>
-      <li class="todo-item">
-        <input type="checkbox" id="todo2">
-        <label for="todo2">Task 2</label>
-        <div class="actions">
-          <button class="edit">Edit</button>
-          <button class="delete">Delete</button>
-        </div>
-      </li>
-      <li class="todo-item">
-        <input type="checkbox" id="todo3">
-        <label for="todo3">Task 3</label>
-        <div class="actions">
-          <button class="edit">Edit</button>
-          <button class="delete">Delete</button>
-        </div>
-      </li>
+      </li> 
+   <?php }
+   ?>
     </ul>
+    <form action="add_task.php" method="POST">
     <div class="add-todo">
-      <input type="text" id="newTodo" placeholder="Enter a new task">
-      <button id="addButton">Add</button>
+      <input type="text" id="newTodo" name="task" placeholder="Enter a new task">
+      <button type="submit" name="btn-add" id="addButton">Add</button>
     </div>
+    </form>
     <div class="user-area">
       <p>Welcome, John Doe!</p>
       <button id="logoutButton">Logout</button>
@@ -159,3 +153,12 @@
   </div>
 </body>
 </html>
+
+<script>
+  function editBtn(button)
+  {
+id=button.id
+name = button.getAttribute('data-name');
+document.getElementById('newTodo').value=name
+  }
+</script>
