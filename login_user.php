@@ -9,10 +9,12 @@ include "connection.php";
 // Check if the user exists in the database
 $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
 $result = $conn->query($sql);
+$fetch=mysqli_fetch_assoc($result);
 
 if ($result->num_rows == 1) {
     // User found, redirect to the to-do list page
-    header("Location: todo-list.php");
+    $_SESSION['name']=$fetch['username'];
+    header("Location: todo-list.php"); 
     exit;
 } else {
     // Invalid credentials, display an error message

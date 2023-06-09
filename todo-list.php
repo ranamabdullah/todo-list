@@ -1,5 +1,9 @@
+<?php
+ include "connection.php";
+?>
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>To-Do List</title>
   <style>
@@ -117,48 +121,63 @@
     .user-area button:hover {
       background-color: #d32f2f;
     }
+
+    #updateButton {
+      display: none;
+      background-color: #2196F3
+    }
   </style>
 </head>
+
 <body>
+
   <div class="container">
+    <div class="user-area">
+      <p>Welcome, <?= $_SESSION['name'] ?></p>
+      <button id="logoutButton" onclick="location.href='logout.php'";>Logout</button>
+    </div>
     <h1>To-Do List</h1>
+    <!-- Add Button -->
+    <form action="task.php" method="POST">
+      <div class="add-todo">
+        <input type="text" id="newTodo" name="task" placeholder="Enter a new task">
+        <input type="hidden" name="taskId" id="taskId">
+        <button type="submit" name="btn-add" id="addButton">Add</button>
+        <button type="submit" name="btn-update" id="updateButton">Update</button>
+      </div>
+    </form>
     <ul class="todo-list">
       <?php
-      include "connection.php";
-      $sql="SELECT *FROM task";
-      $query=mysqli_query($conn,$sql);
-      while($row=mysqli_fetch_assoc($query))
-      {
+     
+      $sql = "SELECT *FROM task";
+      $query = mysqli_query($conn, $sql);
+      while ($row = mysqli_fetch_assoc($query)) {
       ?>
-      <li class="todo-item"> 
-        <label for="todo1"><?= $row['name'] ?></label>
-        <div class="actions">
-          <button class="edit" data-name="<?= $row['name'] ?>" onclick="editBtn(this)" id=<?= $row['id'] ?>>Edit</button>
-          <button class="delete" id=<?= $row['id'] ?>>Delete</button>
-        </div>
-      </li> 
-   <?php }
-   ?>
+        <li class="todo-item">
+          <label for="todo1"><?= $row['name'] ?></label>
+          <div class="actions">
+            <button class="edit" data-name="<?= $row['name'] ?>" onclick="editBtn(this)" id=<?= $row['id'] ?>>Edit</button>
+            <button class="delete" onclick="location.href='delete_task.php?id=<?= $row['id'] ?>';">Delete</button>
+          </div>
+        </li>
+      <?php }
+      ?>
     </ul>
-    <form action="add_task.php" method="POST">
-    <div class="add-todo">
-      <input type="text" id="newTodo" name="task" placeholder="Enter a new task">
-      <button type="submit" name="btn-add" id="addButton">Add</button>
-    </div>
-    </form>
-    <div class="user-area">
-      <p>Welcome, John Doe!</p>
-      <button id="logoutButton">Logout</button>
-    </div>
+
+
   </div>
 </body>
+
 </html>
 
 <script>
-  function editBtn(button)
-  {
-id=button.id
-name = button.getAttribute('data-name');
-document.getElementById('newTodo').value=name
+  function editBtn(button) {
+    id = button.id
+    name = button.getAttribute('data-name');
+    document.getElementById('newTodo').value = name
+    document.getElementById('taskId').value = id
+    document.getElementById('updateButton').style.display = "block";
+    document.getElementById('addButton').style.display = "none";
+
   }
 </script>
