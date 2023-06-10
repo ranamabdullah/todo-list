@@ -32,7 +32,7 @@
     }
 
     .input-group input {
-      width: 100%;
+      width: 96%;
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 4px;
